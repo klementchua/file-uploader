@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create an Account</title>
+  </head>
+  <body>
+    <%- include('partials/navbar') %>
+    <div>
+      <h1>Sign up for an account</h1>
+      <form action="/sign-up" method="POST">
+        <div>
+          <label for="username">Username: </label>
+          <input type="text" name="username" />
+        </div>
+        <div>
+          <label for="password">Password: </label>
+          <input type="password" name="password" />
+        </div>
+        <div>
+          <input type="checkbox" name="isEditor" value="editor" />
+          <label for="isEditor">Editor</label>
+        </div>
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
+  </body>
+</html>
