@@ -54,8 +54,48 @@ async function addFile({ title, filename, size }, folderId) {
   await prisma.$disconnect();
 }
 
+async function deleteFile(id) {
+  await prisma.file.delete({
+    where: {
+      id,
+    },
+  });
+  await prisma.$disconnect();
+}
+
 async function addFolder(data) {
   await prisma.folder.create({ data });
+  await prisma.$disconnect();
+}
+
+async function updateFolder(id, name) {
+  await prisma.folder.update({
+    where: {
+      id,
+    },
+    data: {
+      name,
+    },
+  });
+  await prisma.$disconnect();
+}
+
+async function deleteFolder(id) {
+  await prisma.folder.update({
+    where: {
+      id,
+    },
+    data: {
+      files: {
+        deleteMany: {},
+      },
+    },
+  });
+  await prisma.folder.delete({
+    where: {
+      id,
+    },
+  });
   await prisma.$disconnect();
 }
 
@@ -66,5 +106,8 @@ module.exports = {
   getFileById,
   addUser,
   addFile,
+  deleteFile,
   addFolder,
+  updateFolder,
+  deleteFolder,
 };

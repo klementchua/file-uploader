@@ -15,6 +15,11 @@
         <button>
           <a href="/folder/<%= folder.id %>/files/<%= file.id %>">Open</a>
         </button>
+        <button>
+          <a href="/delete-file?id=<%= file.id %>&fid=<%= folder.id %>"
+            >Delete</a
+          >
+        </button>
         <hr />
       </div>
       <% }) %>

@@ -13,6 +13,14 @@
       <div>
         <%= folder.name %>
         <button><a href="/folder/<%= folder.id %>">Open</a></button>
+        <button>
+          <a href="/update-folder?id=<%= folder.id %>&name=<%= folder.name %>"
+            >Update</a
+          >
+        </button>
+        <button>
+          <a href="/delete-folder?id=<%= folder.id %>">Delete</a>
+        </button>
         <hr />
       </div>
       <% }) %>

@@ -30,6 +30,24 @@ async function newFolderPost(req, res) {
   res.redirect('/');
 }
 
+async function updateFolderGet(req, res) {
+  const { name, id } = req.query;
+  res.render('update-folder-form', { name, id });
+}
+
+async function updateFolderPost(req, res) {
+  const { id } = req.query;
+  const { name } = req.body;
+  await db.updateFolder(parseInt(id), name);
+  res.redirect('/');
+}
+
+async function deleteFolder(req, res, next) {
+  const { id } = req.query;
+  await db.deleteFolder(parseInt(id));
+  next();
+}
+
 async function getFolder(req, res) {
   const folder = await db.getFolderWithFilesById(parseInt(req.params.id));
   res.render('folder', { folder });
@@ -52,12 +70,23 @@ async function getFile(req, res) {
   res.render('file', { file });
 }
 
+async function deleteFile(req, res) {
+  const { id, fid } = req.query;
+  await db.deleteFile(parseInt(id));
+  const folder = await db.getFolderWithFilesById(parseInt(fid));
+  res.render('folder', { folder });
+}
+
 module.exports = {
   indexGet,
   signUpPost,
   downloadFile,
   newFolderPost,
+  updateFolderGet,
+  updateFolderPost,
+  deleteFolder,
   getFolder,
   uploadFilePost,
   getFile,
+  deleteFile,
 };

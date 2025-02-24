@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Folder Name</title>
+  </head>
+  <body>
+    <%- include('partials/navbar') %>
+    <h1>Update Folder Name</h1>
+    <form action="/update-folder?id=<%= id %>" method="POST">
+      <label for="name">New folder name: </label>
+      <input type="text" name="name" value="<%= name %>" />
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
