@@ -20,6 +20,22 @@ model User {
   isEditor Boolean @default(false)
 }
 
+model File {
+  id         Int      @id @default(autoincrement())
+  title      String
+  size       Int
+  uploadTime DateTime @default(now())
+  filename   String
+  folder     Folder?  @relation(fields: [folderId], references: [id])
+  folderId   Int?
+}
+
+model Folder {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  files File[]
+}
+
 model Session {
   id        String   @id
   sid       String   @unique

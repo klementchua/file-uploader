@@ -6,8 +6,17 @@
     <title>File Uploader</title>
   </head>
   <body>
-    <%- include('partials/navbar') %> <% if (currentUser) { %> <%-
-    currentUser.username %> <% } else { %>
+    <%- include('partials/navbar') %> <% if (currentUser) { %>
+    <h1>Hi, <%- currentUser.username %></h1>
+    <div>
+      <% files.forEach(file => { %>
+      <div>
+        <%= file.title %>
+        <button><a href="/files/<%= file.id %>">Open</a></button>
+      </div>
+      <% }) %>
+    </div>
+    <% } else { %>
     <h1>Hi Mom</h1>
     <% } %>
   </body>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= file.title %></title>
+  </head>
+  <body>
+    <%- include('partials/navbar') %>
+    <h1><%= file.title %></h1>
+    <p>Size: <%= file.size %></p>
+    <p>Upload Time: <%= file.uploadTime %></p>
+    <button>
+      <a href="/download/<%= file.filename %>">Download File</a>
+    </button>
+  </body>
+</html>
