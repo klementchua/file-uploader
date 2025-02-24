@@ -9,12 +9,14 @@
     <%- include('partials/navbar') %> <% if (currentUser) { %>
     <h1>Hi, <%- currentUser.username %></h1>
     <div>
-      <% files.forEach(file => { %>
+      <% folders.forEach(folder => { %>
       <div>
-        <%= file.title %>
-        <button><a href="/files/<%= file.id %>">Open</a></button>
+        <%= folder.name %>
+        <button><a href="/folder/<%= folder.id %>">Open</a></button>
+        <hr />
       </div>
       <% }) %>
+      <button><a href="/new-folder">New Folder</a></button>
     </div>
     <% } else { %>
     <h1>Hi Mom</h1>

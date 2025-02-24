@@ -6,9 +6,14 @@ const router = Router();
 router.get('/', controller.indexGet);
 router.get('/sign-up', (req, res) => res.render('sign-up-form'));
 router.post('/sign-up', controller.signUpPost);
-router.get('/upload-file', (req, res) => res.render('upload-file-form'));
-router.post('/upload-file', controller.uploadFilePost);
-router.get('/files/:id', controller.getFile);
-router.get('/files/:id/download/:filename', controller.downloadFile);
+router.get('/download/:filename', controller.downloadFile);
+router.get('/new-folder', (req, res) => res.render('new-folder-form'));
+router.post('/new-folder', controller.newFolderPost);
+router.get('/folder/:id', controller.getFolder);
+router.get('/folder/:id/upload-file', (req, res) =>
+  res.render('upload-file-form', { folderId: req.params.id })
+);
+router.post('/folder/:id/upload-file', controller.uploadFilePost);
+router.get('/folder/:folderId/files/:fileId', controller.getFile);
 
 module.exports = router;
