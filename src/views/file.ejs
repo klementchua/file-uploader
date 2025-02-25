@@ -11,7 +11,7 @@
     <p>Size: <%= file.size %></p>
     <p>Upload Time: <%= file.uploadTime %></p>
     <button>
-      <a href="/download/<%= file.filename %>">Download File</a>
+      <a href="<%= file.url %>" download>Download File</a>
     </button>
   </body>
 </html>

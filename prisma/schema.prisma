@@ -25,7 +25,8 @@ model File {
   title      String
   size       Int
   uploadTime DateTime @default(now())
-  filename   String
+  filename   String @unique
+  url        String @unique
   folder     Folder  @relation(fields: [folderId], references: [id])
   folderId   Int
 }

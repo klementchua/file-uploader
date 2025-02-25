@@ -6,7 +6,6 @@ const router = Router();
 router.get('/', controller.indexGet);
 router.get('/sign-up', (req, res) => res.render('sign-up-form'));
 router.post('/sign-up', controller.signUpPost);
-router.get('/download/:filename', controller.downloadFile);
 router.get('/new-folder', (req, res) => res.render('new-folder-form'));
 router.post('/new-folder', controller.newFolderPost);
 router.get('/update-folder', controller.updateFolderGet);

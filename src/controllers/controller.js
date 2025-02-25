@@ -1,7 +1,8 @@
 const db = require('../models/model');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const upload = multer();
+const supabase = require('../config/supabase');
 
 async function indexGet(req, res) {
   const folders = await db.getFolders();
@@ -17,11 +18,6 @@ async function signUpPost(req, res) {
     isEditor: isEditor === 'editor',
   });
   res.redirect('/');
-}
-
-async function downloadFile(req, res) {
-  const filename = req.params.filename;
-  res.download(`uploads/${filename}`);
 }
 
 async function newFolderPost(req, res) {
@@ -44,6 +40,13 @@ async function updateFolderPost(req, res) {
 
 async function deleteFolder(req, res, next) {
   const { id } = req.query;
+  const files = await db.getFilesByFolder(parseInt(id));
+  const { data, error } = await supabase.storage
+    .from('uploads')
+    .remove(files.map((file) => `public/${file.filename}`));
+  if (error) {
+    console.log(`Error deleting folder: `, error);
+  }
   await db.deleteFolder(parseInt(id));
   next();
 }
@@ -56,9 +59,22 @@ async function getFolder(req, res) {
 const uploadFilePost = [
   upload.single('uploadedFile'),
   async (req, res) => {
-    const { originalname, size, filename } = req.file;
+    const { originalname, size } = req.file;
+    const filename = `${Date.now()}`;
+    const { data, error } = await supabase.storage
+      .from('uploads')
+      .upload(`public/${filename}`, req.file.buffer, {
+        contentType: req.file.mimetype,
+      });
+    if (error) {
+      console.error('Error uploading file: ', error);
+      return null;
+    }
+    const { data: publicUrlData } = await supabase.storage
+      .from('uploads')
+      .getPublicUrl(`public/${filename}`);
     await db.addFile(
-      { title: originalname, filename, size },
+      { title: originalname, filename, size, url: publicUrlData.publicUrl },
       parseInt(req.params.id)
     );
     res.redirect(`/folder/${req.params.id}`);
@@ -72,6 +88,13 @@ async function getFile(req, res) {
 
 async function deleteFile(req, res) {
   const { id, fid } = req.query;
+  const filename = (await db.getFileById(parseInt(id))).filename;
+  const { data, error } = await supabase.storage
+    .from('uploads')
+    .remove([`public/${filename}`]);
+  if (error) {
+    console.log(`Error deleting file: `, error);
+  }
   await db.deleteFile(parseInt(id));
   const folder = await db.getFolderWithFilesById(parseInt(fid));
   res.render('folder', { folder });
@@ -80,7 +103,6 @@ async function deleteFile(req, res) {
 module.exports = {
   indexGet,
   signUpPost,
-  downloadFile,
   newFolderPost,
   updateFolderGet,
   updateFolderPost,

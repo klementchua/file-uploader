@@ -35,17 +35,30 @@ async function getFileById(id) {
   return file;
 }
 
+async function getFilesByFolder(id) {
+  const files = await prisma.file.findMany({
+    where: {
+      folder: {
+        id,
+      },
+    },
+  });
+  await prisma.$disconnect();
+  return files;
+}
+
 async function addUser(data) {
   await prisma.user.create({ data });
   await prisma.$disconnect();
 }
 
-async function addFile({ title, filename, size }, folderId) {
+async function addFile({ title, filename, size, url }, folderId) {
   await prisma.file.create({
     data: {
       title,
       filename,
       size,
+      url,
       folder: {
         connect: { id: folderId },
       },
@@ -104,6 +117,7 @@ module.exports = {
   getFolderWithFilesById,
   getFiles,
   getFileById,
+  getFilesByFolder,
   addUser,
   addFile,
   deleteFile,
